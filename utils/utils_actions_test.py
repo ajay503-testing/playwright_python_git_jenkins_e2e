@@ -57,11 +57,12 @@ def getAODDDatesonCartPage(page):
 def addProductToCheckOut(page,brand):
     page.get_by_role("button",name="Checkout").click()
 
-    element = page.locator("xpath=//button[normalize-space(text())='Guest Checkout']")
+    #element = page.locator("xpath=//button[normalize-space(text())='Guest Checkout']")
 
     #if page.url=="https://www.williams-sonoma.com/checkout/signin.html":
     if "signin.html" in page.url:
         print("Element found and visible — clicking it.")
+        element = page.locator("xpath=//button[normalize-space(text())='Guest Checkout']")
         element.click()
         #page.goto("https://www.williams-sonoma.com/checkout/app/shipping.html")
         page.goto(getBrand(brand)+"/checkout/app/shipping.html")
