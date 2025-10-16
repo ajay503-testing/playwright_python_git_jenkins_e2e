@@ -12,7 +12,7 @@ import time
 test_data_list=[
     {"Brand":"PB","item":"6473869"},
     {"Brand":"WS","item":"4057363"},
-    #{"Brand":"WS","item":"100182"}
+    {"Brand":"WS","item":"100182"}
 ]
 
 os.makedirs("screenshots", exist_ok=True)
@@ -108,7 +108,7 @@ def test_capture_dates(playwright:Playwright):
     report_path = os.path.join(reports_dir, f"AODD_Date_Report_{timestamp}.docx")
 
     document.save(report_path)
-    print(f"\n✅ Report saved successfully: {report_path}")
+    print(f"\n Report saved successfully: {report_path}")
 
 
 

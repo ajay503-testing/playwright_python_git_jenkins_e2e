@@ -60,23 +60,17 @@ def addProductToCheckOut(page,brand):
     #element = page.locator("xpath=//button[normalize-space(text())='Guest Checkout']")
 
     #if page.url=="https://www.williams-sonoma.com/checkout/signin.html":
-    if "signin.html" in page.url:
+    if "app/signin.html" not in page.url:
         print("Element found and visible — clicking it.")
-        if page.locator("xpath=//button[normalize-space(text())='Guest Checkout']").is_visible():
-            element = page.locator("xpath=//button[normalize-space(text())='Guest Checkout']")
-            element.click()
-            #page.goto("https://www.williams-sonoma.com/checkout/app/shipping.html")
-            page.goto(getBrand(brand)+"/checkout/app/shipping.html")
-        else:
-            page.locator(
-                "xpath=//checkout-text-ui//error-label-ui[@id='smart-login-email-email-error']//following::input").first.fill(
-                "test@wsgc.com")
-            page.get_by_role("button", name="Continue").click()
-            page.get_by_role("button", name="Guest Checkout").click()
+        element = page.locator("xpath=//button[normalize-space(text())='Guest Checkout']")
+        element.click()
+        #page.goto("https://www.williams-sonoma.com/checkout/app/shipping.html")
+        page.goto(getBrand(brand)+"/checkout/app/shipping.html")
+
     else:
-        page.locator("xpath=//checkout-text-ui//error-label-ui[@id='smart-login-email-email-error']//following::input").first.fill("test@wsgc.com")
-        page.get_by_role("button",name="Continue").click()
-        page.get_by_role("button",name="Guest Checkout").click()
+         page.locator("xpath=//checkout-text-ui//error-label-ui[@id='smart-login-email-email-error']//following::input").first.fill("test@wsgc.com")
+         page.get_by_role("button",name="Continue").click()
+         page.get_by_role("button",name="Guest Checkout").click()
     page.locator("#fullName").first.fill("ajay kumar")
     page.locator("#line1").first.fill("141 area")
     page.locator("#city").first.fill("San fransico")
