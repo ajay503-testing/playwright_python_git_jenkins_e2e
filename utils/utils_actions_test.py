@@ -16,7 +16,7 @@ def launchURL(page,brand):
         if page.get_by_text("No thanks, I'd like to proceed to the US site").is_visible():
             page.get_by_text("No thanks, I'd like to proceed to the US site").click()
     else:
-        page.goto(getBrand(brand))
+        page.goto(getBrand(brand),wait_until="domcontentloaded", timeout=60000)
 
 def closeDialog(page,brand):
     if brand=="PB":
