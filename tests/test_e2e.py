@@ -101,7 +101,12 @@ def test_capture_dates(playwright:Playwright):
             if browser:
                 browser.close()
             print(f"Browser closed for iteration {index}")
-    report_path = "AODD_Date_Report.docx"
+    reports_dir = os.path.join(os.getcwd(), "reports")
+    os.makedirs(reports_dir, exist_ok=True)
+
+    timestamp = time.strftime("%Y%m%d_%H%M%S")
+    report_path = os.path.join(reports_dir, f"AODD_Date_Report_{timestamp}.docx")
+
     document.save(report_path)
     print(f"\n✅ Report saved successfully: {report_path}")
 
