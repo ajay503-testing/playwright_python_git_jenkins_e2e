@@ -87,7 +87,7 @@ def test_capture_dates(playwright:Playwright,test_data):
         if browser:
             browser.close()
         print(f"Browser closed for {brand} - {item}")
-
+def pytest_sessionfinish(session, exitstatus):
     reports_dir = os.path.join(os.getcwd(), "reports")
     os.makedirs(reports_dir, exist_ok=True)
 
