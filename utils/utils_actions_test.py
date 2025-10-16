@@ -62,10 +62,17 @@ def addProductToCheckOut(page,brand):
     #if page.url=="https://www.williams-sonoma.com/checkout/signin.html":
     if "signin.html" in page.url:
         print("Element found and visible — clicking it.")
-        element = page.locator("xpath=//button[normalize-space(text())='Guest Checkout']")
-        element.click()
-        #page.goto("https://www.williams-sonoma.com/checkout/app/shipping.html")
-        page.goto(getBrand(brand)+"/checkout/app/shipping.html")
+        if page.locator("xpath=//button[normalize-space(text())='Guest Checkout']").is_visible():
+            element = page.locator("xpath=//button[normalize-space(text())='Guest Checkout']")
+            element.click()
+            #page.goto("https://www.williams-sonoma.com/checkout/app/shipping.html")
+            page.goto(getBrand(brand)+"/checkout/app/shipping.html")
+        else:
+            page.locator(
+                "xpath=//checkout-text-ui//error-label-ui[@id='smart-login-email-email-error']//following::input").first.fill(
+                "test@wsgc.com")
+            page.get_by_role("button", name="Continue").click()
+            page.get_by_role("button", name="Guest Checkout").click()
     else:
         page.locator("xpath=//checkout-text-ui//error-label-ui[@id='smart-login-email-email-error']//following::input").first.fill("test@wsgc.com")
         page.get_by_role("button",name="Continue").click()
