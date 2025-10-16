@@ -20,11 +20,11 @@ from utils.word_utils import word_doc_utilty
 os.makedirs("screenshots", exist_ok=True)
 os.makedirs("videos", exist_ok=True)
 
-
+document = Document()
+document.add_heading("AODD Dates Capture Report", level=1)
 @pytest.mark.parametrize("test_data",load_test_data())
 def test_capture_dates(playwright:Playwright,test_data):
-    document = Document()
-    document.add_heading("AODD Dates Capture Report", level=1)
+
     brand = test_data["Brand"]
     item = test_data["item"]
 
