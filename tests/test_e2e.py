@@ -9,22 +9,19 @@ from docx.shared import Pt
 import utils.utils_actions_test
 import time
 
-test_data_list=[
-    {"Brand":"PB","item":"6473869"},
-    {"Brand":"WS","item":"4057363"},
-    {"Brand":"WS","item":"100182"}
-]
+from utils.json_utils import load_test_data
+from utils.screenshot_utils import capture_element_region
+from utils.word_utils import word_doc_utilty
+
+
 
 os.makedirs("screenshots", exist_ok=True)
 os.makedirs("videos", exist_ok=True)
 
 def test_capture_dates(playwright:Playwright):
     document = Document()
-    style = document.styles["Normal"]
-    style.paragraph_format.space_after = Pt(0)
-    style.paragraph_format.space_before = Pt(0)
-    style.paragraph_format.line_spacing = 1.0
     document.add_heading("AODD Dates Capture Report", level=1)
+    test_data_list=load_test_data()
     for index, test_data in enumerate(test_data_list):
         brand = test_data["Brand"]
         item = test_data["item"]
@@ -57,37 +54,25 @@ def test_capture_dates(playwright:Playwright):
             dates_pip = utils.utils_actions_test.getAODDDatesOnPipPage(page)
             print(dates_pip)
             pip_screenshot = f"{output_dir}/pip_page.png"
-            page.screenshot(path=pip_screenshot, full_page=True)
-            print("Captured PIP Page Screenshot")
+            pip_screenshot=capture_element_region(page,pip_screenshot)
+
+
 
             utils.utils_actions_test.addItemToCart(page)
             cart_dates = utils.utils_actions_test.getAODDDatesonCartPage(page)
             print("AODD Dates on Cart Page:", cart_dates)
             cart_screenshot = f"{output_dir}/cart_page.png"
-            page.screenshot(path=cart_screenshot,full_page=True)
-            print("Captured Cart Page Screenshot")
+            cart_screenshot = capture_element_region(page, cart_screenshot)
 
             checkout_dates = utils.utils_actions_test.addProductToCheckOut(page,test_data["Brand"])
             print("Checkout Dates:", checkout_dates)
             checkout_screenshot = f"{output_dir}/checkout_page.png"
-            page.screenshot(path=checkout_screenshot,full_page=True)
-            print("Captured Checkout Page Screenshot")
+            checkout_screenshot=capture_element_region(page, checkout_screenshot)
 
             time.sleep(10)
-            # Wait for recording to finalize
-            time.sleep(5)
             video_path = context.pages[0].video.path() if context.pages[0].video else "No video"
+            word_doc_utilty(document,brand,item,dates_pip,pip_screenshot,cart_screenshot,checkout_dates,checkout_screenshot,cart_dates,video_path)
 
-            # Add results to Word doc
-            document.add_heading(f"{brand} - {item}", level=2)
-            document.add_paragraph(f"PIP Dates: {dates_pip}")
-            document.add_picture(pip_screenshot,  width=Inches(3))
-            document.add_paragraph(f"Cart Dates: {cart_dates}")
-            document.add_picture(cart_screenshot,  width=Inches(3))
-            document.add_paragraph(f"Checkout Dates: {checkout_dates}")
-            document.add_picture(checkout_screenshot,  width=Inches(3))
-            document.add_paragraph(f"Video Path: {video_path}")
-            document.add_page_break()
 
         except Exception as e:
             print(f"Error in iteration {index}: {e}")
